@@ -15,33 +15,56 @@ void fillVector(std::vector<std::string>& param, std::string line);
 void compareBoxID(const std::vector<std::string>& param, std::vector<std::string>& correctIDs);
 int compareChars(std::string str1, std::string str2);
 void printVector(std::vector<std::string>& param);
+void aocPart1();
+void aocPart2();
 
 int main()
+{
+	aocPart1();
+
+	aocPart2();
+
+	std::getchar();
+}
+
+void aocPart1()
 {
 	int entryArr[2];
 	std::ifstream readFile;
 	std::string readLine;
+	readFile.open("boxID.txt");
+	entryArr[0] = 0;
+	entryArr[1] = 0;
+	while (std::getline(readFile, readLine))
+	{
+		readBoxID(readLine, entryArr);
+	}
+	std::cout << "Total occuring 2: " << entryArr[0] << '\n';
+	std::cout << "Total occuring 3: " << entryArr[1] << '\n';
+	std::cout << "Answer: " << entryArr[0] << " * " << entryArr[1] << " = " << entryArr[0] * entryArr[1] << '\n';
+}
+
+void aocPart2()
+{
+	std::ifstream readFile;
+	std::string readLine;
+
 	std::vector<std::string> boxIDList;
 	std::vector<std::string> correctBoxIDs;
-	readFile.open("boxID.txt");
 
-	//entryArr[0] = 0;
-	//entryArr[1] = 0;
+	readFile.open("boxID.txt");
 
 	while (std::getline(readFile, readLine))
 	{
 		fillVector(boxIDList, readLine);
-		//readBoxID(readLine, entryArr);
 	}
+
 	compareBoxID(boxIDList, correctBoxIDs);
-	
+
 	std::cout << "Correct BoxIDs:" << '\n';
 
 	printVector(correctBoxIDs);
-
-	//std::cout << "Total occuring 2: " << entryArr[0] << '\n';
-	//std::cout << "Total occuring 3: " << entryArr[1] << '\n';
-	std::getchar();
+	
 }
 
 void readBoxID(std::string boxID, int param[])
@@ -85,6 +108,7 @@ void readBoxID(std::string boxID, int param[])
 		std::cout << "I added 3 occuring!" << '\n';
 	}
 }
+
 void compareBoxID(const std::vector<std::string>& paramVec, std::vector<std::string>& correctIDs)
 {
 	for (int i = 0; i < paramVec.size(); i++)
@@ -104,6 +128,7 @@ void compareBoxID(const std::vector<std::string>& paramVec, std::vector<std::str
 		}
 	}
 }
+
 int compareChars(std::string str1, std::string str2)
 {
 	int diff = 0;
@@ -114,10 +139,12 @@ int compareChars(std::string str1, std::string str2)
 	}
 	return diff;
 }
+
 void fillVector(std::vector<std::string>& param, std::string line)
 {
 	param.push_back(line);
 }
+
 void printVector(std::vector<std::string>& param)
 {
 	for (std::string correctID : param)

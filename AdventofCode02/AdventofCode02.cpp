@@ -11,24 +11,36 @@
 #include <map>
 
 void readBoxID(std::string boxID, int param[]);
+void fillVector(std::vector<std::string>& param, std::string line);
+void compareBoxID(const std::vector<std::string>& param, std::vector<std::string>& correctIDs);
+int compareChars(std::string str1, std::string str2);
+void printVector(std::vector<std::string>& param);
 
 int main()
 {
 	int entryArr[2];
 	std::ifstream readFile;
 	std::string readLine;
+	std::vector<std::string> boxIDList;
+	std::vector<std::string> correctBoxIDs;
 	readFile.open("boxID.txt");
 
-	entryArr[0] = 0;
-	entryArr[1] = 0;
+	//entryArr[0] = 0;
+	//entryArr[1] = 0;
 
 	while (std::getline(readFile, readLine))
 	{
-		readBoxID(readLine, entryArr);
+		fillVector(boxIDList, readLine);
+		//readBoxID(readLine, entryArr);
 	}
+	compareBoxID(boxIDList, correctBoxIDs);
+	
+	std::cout << "Correct BoxIDs:" << '\n';
 
-	std::cout << "Total occuring 2: " << entryArr[0] << '\n';
-	std::cout << "Total occuring 3: " << entryArr[1] << '\n';
+	printVector(correctBoxIDs);
+
+	//std::cout << "Total occuring 2: " << entryArr[0] << '\n';
+	//std::cout << "Total occuring 3: " << entryArr[1] << '\n';
 	std::getchar();
 }
 
@@ -71,5 +83,45 @@ void readBoxID(std::string boxID, int param[])
 	{
 		param[1]++;
 		std::cout << "I added 3 occuring!" << '\n';
+	}
+}
+void compareBoxID(const std::vector<std::string>& paramVec, std::vector<std::string>& correctIDs)
+{
+	for (int i = 0; i < paramVec.size(); i++)
+	{
+		if (i == paramVec.size()-1)
+			break;
+
+		for (int j = i + 1; j < paramVec.size(); j++)
+		{
+			std::cout << "Comparing: " << paramVec[i] << " with " << paramVec[j] << '\n';
+			if (compareChars(paramVec[i], paramVec[j]) == 1)
+			{
+				std::cout << "Found diff 1!" << '\n';
+				correctIDs.push_back(paramVec[i]);
+				correctIDs.push_back(paramVec[j]);
+			}
+		}
+	}
+}
+int compareChars(std::string str1, std::string str2)
+{
+	int diff = 0;
+	for (int i = 0; i < str1.length(); i++)
+	{
+		if (str1[i] != str2[i])
+			diff++;
+	}
+	return diff;
+}
+void fillVector(std::vector<std::string>& param, std::string line)
+{
+	param.push_back(line);
+}
+void printVector(std::vector<std::string>& param)
+{
+	for (std::string correctID : param)
+	{
+		std::cout << correctID << '\n';
 	}
 }
